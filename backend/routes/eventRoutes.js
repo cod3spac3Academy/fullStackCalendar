@@ -5,7 +5,7 @@ const {
   updateEvent,
   deleteEvent,
 } = require("../Controller/eventController");
-const verifyToken = require("../middlewares/verifyToken");
+const verifyToken = require("../middlewares/auth");
 
 router.get("/", verifyToken, getEvents);
 router.post("/", verifyToken, createEvent);

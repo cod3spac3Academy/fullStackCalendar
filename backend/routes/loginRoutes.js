@@ -1,6 +1,6 @@
 // importar loginController y generar las rutas para el registro y el login
 const loginController = require("../Controller/loginController");
-const verifyToken = require("../middlewares/verifyToken");
+const verifyToken = require("../middlewares/auth");
 const router = require('express').Router();
 
 // endpoint para el registro de usuarios
