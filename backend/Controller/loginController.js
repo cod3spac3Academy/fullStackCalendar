@@ -34,7 +34,7 @@ const register = async (req, res) => {
     // generar el token de refresco
     const refreshToken = generateToken(payload, true);
     // enviar respuesta con status 201, status, data y error
-    res.status(201).json({
+    return res.status(201).json({
       status: "succeeded",
       data: {
         user,
@@ -43,18 +43,18 @@ const register = async (req, res) => {
       },
       error: null,
     });
-
   } catch (error) {
     // si error code es 11000, enviar un error de usuario duplicado
     if (error.code === 11000) {
-      res.status(409).json({
+      return res.status(409).json({
         status: "failed",
         data: null,
-        error: "The email is already registered. Please, try with another email.",
+        error:
+          "The email is already registered. Please, try with another email.",
       });
     } else {
       // si no, enviar el error
-      res.status(400).json({
+      return res.status(400).json({
         status: "failed",
         data: null,
         error: error.message,
@@ -70,20 +70,25 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     // buscar el usuario en la base de datos
     const user = await Login.findOne({ email });
-    // si no existe el usuario, enviar un error
-    !user && res.status(404).json({
-      status: "failed",
-      data: null,
-      error: "Wrong email or password. Please, try again.",
-    });
+    // si no existe el usuario, enviar un error y devolver la llamada con return
+    if (!user) {
+      return res.status(404).json({
+        status: "failed",
+        data: null,
+        error: "Wrong email or password. Please, try again.",
+      });
+    }
+
     // si existe el usuario, comparar la contraseña
     const validPassword = await bcrypt.compare(password, user.password);
     // si la contraseña es incorrecta, enviar un error
-    !validPassword && res.status(404).json({
-      status: "failed",
-      data: null,
-      error: "Wrong email or password. Please, try again",
-    });
+    if (!validPassword) {
+      return res.status(404).json({
+        status: "failed",
+        data: null,
+        error: "Wrong email or password. Please, try again",
+      });
+    }
     // si la contraseña es correcta, generar el token
     const payload = { id: user._id, email: user.email, role: user.role };
     const token = generateToken(payload, false);
@@ -91,16 +96,15 @@ const login = async (req, res) => {
     const refreshToken = generateToken(payload, true);
 
     // obtener la fecha del último login para generar una posterior
-    // el campo tiene el siguiente formato: 2027-08-31T22:00:00.000Z, y 
+    // el campo tiene el siguiente formato: 2027-08-31T22:00:00.000Z, y
     // queremos obtener el año, para generar una fecha posterior
     const lastLoginYear = parseInt(user.lastLogin.toISOString().slice(0, 4));
-    console.log(lastLoginYear);
     // actualizar la fecha de último login
     user.lastLogin = getFutureDate(lastLoginYear + 6, +lastLoginYear + 1);
     await user.save();
 
     // enviar el token
-    res.status(200).json({
+    return res.status(200).json({
       status: "succeeded",
       data: {
         user,
@@ -110,11 +114,10 @@ const login = async (req, res) => {
       error: null,
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
+    return res.status(500).json({
       status: "failed",
       data: null,
-      error: err.message
+      error: err.message,
     });
   }
 };
@@ -124,7 +127,7 @@ const refreshToken = async (req, res) => {
   try {
     // si no hay payload desde token de refresco, enviar un error
     if (!req.user) {
-      res.status(403).json({
+      return res.status(403).json({
         status: "failed",
         data: null,
         error: "Unauthorized",
@@ -132,8 +135,12 @@ const refreshToken = async (req, res) => {
     }
 
     // si hay token de refresco y no ha expirado, obtener el payload y enviar 2 nuevos tokens
-    const payload = { id: req.user.id, email: req.user.email, role: req.user.role };
-    res.status(200).json({
+    const payload = {
+      id: req.user.id,
+      email: req.user.email,
+      role: req.user.role,
+    };
+    return res.status(200).json({
       status: "succeeded",
       data: {
         user: payload,
@@ -144,10 +151,10 @@ const refreshToken = async (req, res) => {
     });
   } catch (err) {
     // si hay error, enviar el error
-    res.status(400).json({
+    return res.status(400).json({
       status: "failed",
       data: null,
-      error: err.message
+      error: err.message,
     });
   }
 };

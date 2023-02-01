@@ -1,10 +1,20 @@
 // importar objecId de mongoose
 const { ObjectId } = require('mongoose').Types;
 
+// get dates and file extension from command line
+const args = process.argv.slice(3);
+
 const events = [];
-const ids = ["63d0dee3bed5ce7c993b5ecc", "63d0dee3bed5ce7c993b5ecd", "63d0dee3bed5ce7c993b5ecf", "63d0f229fbb4226d8465f86a", "63d0dee3bed5ce7c993b5ece", "63d0dee3bed5ce7c993b5ed0"];
+const ids = [];
+// get all ids from db
+// db.logins.find({},{_id:1}).forEach((login)=>ids.push(login._id.toString()));
+ids = ["63d0dee3bed5ce7c993b5ecc", "63d0dee3bed5ce7c993b5ecd", "63d0dee3bed5ce7c993b5ecf", "63d0f229fbb4226d8465f86a", "63d0dee3bed5ce7c993b5ece", "63d0dee3bed5ce7c993b5ed0"];
+console.log(ids);
 const start = new Date("2021-01-01T00:00:00.000Z");
 const end = new Date("2025-12-31T23:59:59.000Z");
+// year of date based on first parameter
+// const start = new Date(`${args[0]}-01-01T00:00:00.000Z`);
+// const end = new Date(`${args[1]}-12-31T23:59:59.000Z`);
 
 for (let year = start.getFullYear(); year <= end.getFullYear(); year++) {
     for (let id of ids) {
@@ -48,4 +58,6 @@ db.events.insertMany(events);
 
 // Exportarlos a archivo
 // const fs = require('fs');
-// fs.writeFileSync('events.json', JSON.stringify(events));
+// fs.writeFileSync('events.mongodb', JSON.stringify(events));
+// file extension based on third parameter
+// fs.writeFileSync(`events.${args[2]}`, JSON.stringify(events));

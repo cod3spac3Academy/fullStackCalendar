@@ -1,0 +1,4 @@
+# Ignorar los directorios de los paquetes instalados, tanto en backend como en frontend
+**/node_modules
+# Ignorar .env, en los directorios de backend y frontend
+**/.env
