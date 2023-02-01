@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 import { useState } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import classes from "./LoginPage.module.css";
 import LoginForm from "./LoginForm";
 import Modal from "../Modal/Modal";
@@ -9,7 +9,8 @@ import { LocalStorage } from "../../services/LocalStorage.service";
 
 function LoginPage() {
   const navigate = useNavigate();
-  console.log(LocalStorage.getItem("rememberMe"));
+  const location = useLocation();
+  const isSignup = location.pathname.includes("signup");
   const [pending, setPending] = useState(false);
   const [visible, setVisible] = useState(false);
   const [loginInfo, setLoginInfo] = useState({
@@ -52,7 +53,6 @@ function LoginPage() {
           setLoginInfo({
             loggedIn: true,
             email: loginData.email,
-            // replace the password with asterisks
             password: loginData.password,
             rememberMe: loginData.rememberMe,
             loginHeader: "Login successful",
@@ -71,7 +71,6 @@ function LoginPage() {
             loginMessage: data.error,
           });
         }
-        // setVisible(!visible);
       } catch (error) {
         console.log("Error: ", error.message);
 
@@ -83,19 +82,7 @@ function LoginPage() {
           loginHeader: "Login failed",
           loginMessage: error.message,
         });
-        // setVisible(!visible);
       }
-
-      // if (loginData && validateEmail(loginData.email) && validatePassword(loginData.password)) {
-      //     console.log("Login successful");
-      //     setLoginInfo({
-      //         loggedIn: true,
-      //         email: loginData.email,
-      //         password: loginData.password,
-      //         rememberMe: loginData.rememberMe,
-      //         loginHeader: 'Login successful',
-      //         loginMessage: 'You have been logged out successfully'
-      //     })
     } else {
       setLoginInfo({
         loggedIn: false,
@@ -125,12 +112,20 @@ function LoginPage() {
               galaxy.
             </p>
             <div className={classes["login-links"]}>
-              <a href="#" className={classes.active}>
+              <NavLink
+                to="/"
+                className={({ isActive }) => (isActive ? classes.active : "")}
+              >
                 Login
-              </a>
-              <a href="#">Register</a>
+              </NavLink>
+              <NavLink
+                to="/signup"
+                className={({ isActive }) => (isActive ? classes.active : "")}
+              >
+                Register
+              </NavLink>
             </div>
-            <LoginForm onLogin={handleVisibility} onRemember={loginInfo}/>
+            <LoginForm onLogin={handleVisibility} location={isSignup} />
           </div>
         </div>
       </div>

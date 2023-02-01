@@ -4,6 +4,8 @@ import classes from "./LoginForm.module.css";
 import { LocalStorage } from "../../services/LocalStorage.service";
 
 function LoginForm(props) {
+  console.log(props.location);
+  const refName = useRef("");
   const refEmail = useRef("");
   const refPassword = useRef("");
   const refCheckbox = useRef(false);
@@ -27,7 +29,6 @@ function LoginForm(props) {
       [name]: name === "rememberMe" ? checked : value,
     });
   };
-  console.log(loginData.rememberMe);
   const handleSubmit = (event) => {
     event.preventDefault();
     // validar que el email y el password no estén vacíos
@@ -65,6 +66,20 @@ function LoginForm(props) {
 
   return (
     <form onSubmit={handleSubmit}>
+      {props.location && (
+        //input for name
+        <input
+          ref={refName}
+          className={`${classes["form-control"]} ${
+            loginError.emptyName && classes["not-fullfilled"]
+          }`}
+          type="text"
+          name="name"
+          onChange={handleChange}
+          value={loginData.name || ""}
+          placeholder="Name"
+        />
+      )}
       <input
         ref={refEmail}
         className={`${classes["form-control"]} ${
