@@ -2,6 +2,7 @@ export const validateEmail = (mail) => {
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
     return true;
   }
+  console.log("You have entered an wrong email address!");
   return false;
 };
 /* validate a password that includes 
@@ -32,5 +33,20 @@ export const validatePassword = (password) => {
   ) {
     return true;
   }
+  console.log("You have entered an wrong password!");
   return false;
 };
+
+export const validateName = (name) => {
+  // validate at leas a string with 2 or more letters, 
+  // plus a white space, plus a string with 2 or more letters
+  // optionally, include another white space and another string with 2 or more letters
+  // include vocals with accents and ñ (https://unicode-table.com/en/#00C1)
+  
+  if (/^([a-zA-Z\u00C0-\u00FF]{2,}\s[a-zA-Z\u00C0-\u00FF]{2,}(\s[a-zA-Z\u00C0-\u00FF]{2,})?)$/.test(name)) {
+  
+    return true;
+  }
+  console.log("You have entered an wrong name!");
+  return false;
+}

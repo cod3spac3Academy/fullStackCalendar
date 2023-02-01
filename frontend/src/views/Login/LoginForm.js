@@ -17,6 +17,7 @@ function LoginForm(props) {
   });
 
   const [loginError, setLoginError] = useState({
+    emptyName: false,
     emptyEmail: false,
     emptyPassword: false,
   });
@@ -31,8 +32,19 @@ function LoginForm(props) {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
+    // si es el registro, validar que el nombre no esté vacío
+    if (props.location && refName.current.value === "") {
+      // establecer error en el nombre
+      setLoginError({
+        ...loginError,
+        emptyName: true,
+      });
+      //poner el foco en el input del nombre
+      refName.current.focus();
+    }
+
     // validar que el email y el password no estén vacíos
-    if (refEmail.current.value === "") {
+    else if (refEmail.current.value === "") {
       // establecer error en el email
       setLoginError({
         ...loginError,
@@ -51,10 +63,12 @@ function LoginForm(props) {
     } else {
       // si no hay errores, modificar el estado de loginError, y enviar los datos al componente padre
       setLoginError({
+        emptyName: false,
         emptyEmail: false,
         emptyPassword: false,
       });
       const loginData = {
+        name: refName.current.value,
         email: refEmail.current.value,
         password: refPassword.current.value,
         rememberMe: refCheckbox.current.checked,
@@ -113,8 +127,10 @@ function LoginForm(props) {
         <label htmlFor="check1">Remember me</label>
       </div>
       <div className={classes["form-button"]}>
-        <button type="submit">Login</button>
-        <a href="#">Forget password?</a>
+        <button type="submit">
+          {(props.location && "Sign Up") || "Login"}
+        </button>
+        {props.location && <a href="#">Forgot password?</a>}
       </div>
     </form>
   );

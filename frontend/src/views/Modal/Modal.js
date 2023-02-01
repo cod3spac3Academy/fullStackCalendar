@@ -17,6 +17,11 @@ function Modal(props) {
           <div>
             <p>{props.data.loginMessage}</p>
             <ul>
+              {props.data.name && (
+                <li>
+                  <strong>Name:</strong> {props.data.name}
+                </li>
+              )}
               <li>
                 <strong>Email:</strong> {props.data.email}
               </li>

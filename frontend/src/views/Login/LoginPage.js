@@ -4,7 +4,11 @@ import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import classes from "./LoginPage.module.css";
 import LoginForm from "./LoginForm";
 import Modal from "../Modal/Modal";
-import { validateEmail, validatePassword } from "../../utils/validate";
+import {
+  validateEmail,
+  validatePassword,
+  validateName,
+} from "../../utils/validate";
 import { LocalStorage } from "../../services/LocalStorage.service";
 
 function LoginPage() {
@@ -22,13 +26,17 @@ function LoginPage() {
   });
 
   const handleVisibility = async (loginData) => {
+    console.log(loginData.name);
     if (
       loginData &&
       validateEmail(loginData.email) &&
-      validatePassword(loginData.password)
+      validatePassword(loginData.password) &&
+      ((isSignup && validateName(loginData.name)) || !isSignup)
     ) {
+      setPending(true);
+      let path = isSignup ? "signup" : "login";
       try {
-        const response = await fetch("http://localhost:8000/auth/login", {
+        const response = await fetch(`http://localhost:8000/auth/${path}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -36,6 +44,8 @@ function LoginPage() {
           body: JSON.stringify({
             email: loginData.email,
             password: loginData.password,
+            name: loginData.name || "",
+            role: isSignup ? "user" : "",
           }),
         });
         const data = await response.json();
@@ -50,13 +60,26 @@ function LoginPage() {
           // guardar el refreshToken en el localStorage
           LocalStorage.setItem("refreshToken", data.data.refreshToken);
           // redirigir a la página de calendario con useNavigate
+          let goTo = "/";
+          let loginHeader = "";
+          let loginMessage = "";
+          if (isSignup) {
+            goTo = "/login";
+            loginHeader = "Signup successful";
+            loginMessage = "You may be redirected to login";
+          } else {
+            goTo = "/calendar";
+            loginHeader = "Login successful";
+            loginMessage = "You may be redirected to calendar";
+          }
           setLoginInfo({
             loggedIn: true,
+            name: loginData.name || "",
             email: loginData.email,
             password: loginData.password,
             rememberMe: loginData.rememberMe,
-            loginHeader: "Login successful",
-            loginMessage: "You may be redirected to calendar",
+            loginHeader,
+            loginMessage,
           });
           setTimeout(() => {
             navigate("/calendar");
@@ -64,33 +87,34 @@ function LoginPage() {
         } else {
           setLoginInfo({
             loggedIn: false,
+            name: loginData.name || "",
             email: loginData.email,
             password: loginData.password,
             rememberMe: loginData.rememberMe,
-            loginHeader: "Login failed",
+            loginHeader: isSignup ? "Signup failed" : "Login failed",
             loginMessage: data.error,
           });
         }
       } catch (error) {
-        console.log("Error: ", error.message);
-
         setLoginInfo({
           loggedIn: false,
+          name: loginData.name || "",
           email: loginData.email,
           password: loginData.password,
           rememberMe: loginData.rememberMe,
-          loginHeader: "Login failed",
+          loginHeader: isSignup ? "Signup failed" : "Login failed",
           loginMessage: error.message,
         });
       }
     } else {
       setLoginInfo({
         loggedIn: false,
+        name: loginData.name || "",
         email: loginData.email,
         password: loginData.password,
         rememberMe: loginData.rememberMe,
-        loginHeader: "Login failed",
-        loginMessage: "Wrong email or password",
+        loginHeader: isSignup ? "Signup failed" : "Login failed",
+        loginMessage: "Please, fill all the fields correctly",
       });
     }
     setVisible(!visible);
@@ -113,7 +137,7 @@ function LoginPage() {
             </p>
             <div className={classes["login-links"]}>
               <NavLink
-                to="/"
+                to="/login"
                 className={({ isActive }) => (isActive ? classes.active : "")}
               >
                 Login
