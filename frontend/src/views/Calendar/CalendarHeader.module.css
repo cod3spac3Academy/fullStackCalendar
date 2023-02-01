@@ -1,0 +1,43 @@
+.header {
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+}
+
+.header-date {
+  font-family: "Alegreya", serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+}
+
+.header-nav{
+    padding-top: 2px;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+}
+.header-nav button {
+    min-width: 50px;
+    display: inline-block;
+    align-items: center;
+    padding: .25rem .75rem;
+    line-height: 1;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: .8rem;
+    color: #718096;
+}
+.header-nav button:hover {
+    background-color: #e2e8f0;
+    border-radius: 0.5rem;
+}
+.header-nav .line-right {
+    display: inline-flex;
+    border-left: 1px solid #e2e8f0;
+    height: 2.4rem;
+    margin: 0 0.5rem;
+}

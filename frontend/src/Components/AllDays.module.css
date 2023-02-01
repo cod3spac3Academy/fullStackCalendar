@@ -1,0 +1,14 @@
+.today {
+    background-color: #4299e1;
+    border-radius: 50%;
+    padding: 0.5rem;
+}
+.header-day, .body-day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 200;
+    color: #718096;
+    font-family: 'Sora', sans-serif;
+}
