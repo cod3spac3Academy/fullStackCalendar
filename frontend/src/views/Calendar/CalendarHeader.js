@@ -4,8 +4,6 @@ const CalendarHeader = ({ current }) => {
   return (
     <div className={classes.header}>
       <div className={classes["header-date"]}>
-        {/* capitalize the first letter of the month */}
-        {/* <strong> {getMonthName(month)} </strong> {year} */}
         <strong> {current.month} </strong> {current.year}
       </div>
       <div className={classes["header-nav"]}>

@@ -1,0 +1,32 @@
+.today {
+    background-color: #4299e1;
+    border-radius: 50%;
+    padding: 0.5rem;
+}
+.day-box {
+    display: flex;
+    /* justify-content: center;
+    align-items: center; */
+    flex-direction: column;
+    font-size: 1.2rem;
+    font-weight: 200;
+    font-family: 'Sora', sans-serif;
+    color: #718096;
+    padding: .15rem.25rem;
+    min-height: 12.75vh;
+}
+.day-top {
+    border-top: 1px solid #e2e8f0;
+}
+.day-left {
+    border-left: 1px solid #e2e8f0;
+}
+.day-right {
+    border-right: 1px solid #e2e8f0;
+}
+.day-bottom {
+    border-bottom: 1px solid #e2e8f0;
+}
+.weekend {
+    color: #e53e3e;
+}

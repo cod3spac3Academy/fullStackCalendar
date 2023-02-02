@@ -5,24 +5,30 @@
 // Path: Calendar/frontend/src/views/Calendar/CalendarPage.js
 import classes from "./CalendarPage.module.css";
 import CalendarHeader from "./CalendarHeader";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import all the functions from the datesManager file
 import * as datesManager from "../../utils/datesManager";
 import CalendarGrid from "./CalendarGrid";
 
 const CalendarPage = () => {
-  const [month, setMonth] = useState(new Date().getMonth());
-  const [year, setYear] = useState(new Date().getFullYear());
+  const [year, setYearNumber] = useState(null);
+  const [month, setMonthName] = useState(null);
+  const [today, setToday] = useState(null);
+
+  useEffect(() => {
+    const { year, month, day } = datesManager.getCurrentDate();
+    setYearNumber(year);
+    setMonthName(month);
+    setToday(day);
+  });
   const firstDay = datesManager.getFirstDayOfMonth(year, month);
   const numberOfDays = datesManager.getNumberOfDaysInMonth(year, month);
   const monthBefore = datesManager.getNumberOfDaysInPreviousMonth(year, month);
   const currentDate = {
-    month: datesManager.getMonthName(month),
+    month: datesManager.getMonthName(month) ,
     year,
   };
-  const daysToGrid = { firstDay, numberOfDays, monthBefore };
-  let weeks = datesManager.getNumberOfWeeksInMonth(month, year);
-  console.log('weeks: ', weeks);
+  const daysToGrid = { today, firstDay, numberOfDays, monthBefore };
   
   return (
     <div className={classes.container}>
