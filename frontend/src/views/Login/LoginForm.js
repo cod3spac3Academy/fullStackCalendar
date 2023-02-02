@@ -4,7 +4,6 @@ import classes from "./LoginForm.module.css";
 import { LocalStorage } from "../../services/LocalStorage.service";
 
 function LoginForm(props) {
-  console.log(props.location);
   const refName = useRef("");
   const refEmail = useRef("");
   const refPassword = useRef("");
@@ -121,8 +120,9 @@ function LoginForm(props) {
           ref={refCheckbox}
           type="checkbox"
           id="check1"
+          name="rememberMe"
           onChange={handleChange}
-          checked={loginData.rememberMe || false}
+          checked={loginData.rememberMe}
         />
         <label htmlFor="check1">Remember me</label>
       </div>

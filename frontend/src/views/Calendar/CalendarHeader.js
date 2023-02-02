@@ -1,6 +1,15 @@
 import classes from "./CalendarHeader.module.css";
 
-const CalendarHeader = ({ current }) => {
+const CalendarHeader = ({ current, onHandleMonth }) => {
+  const handleClick = (e) => {
+    const prev = e.target.dataset.direction === "prev";
+    if (prev) {
+      onHandleMonth(true);
+    } else {
+      onHandleMonth(false);
+    }
+  };
+
   return (
     <div className={classes.header}>
       <div className={classes["header-date"]}>
@@ -9,10 +18,12 @@ const CalendarHeader = ({ current }) => {
       <div className={classes["header-nav"]}>
         <button className={classes["header-nav-prev"]}>
           <svg
+            onClick={handleClick}
             className="arrow"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            data-direction="prev"
           >
             <path
               strokeLinecap="round"
@@ -29,6 +40,7 @@ const CalendarHeader = ({ current }) => {
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            onClick={handleClick}
           >
             <path
               strokeLinecap="round"

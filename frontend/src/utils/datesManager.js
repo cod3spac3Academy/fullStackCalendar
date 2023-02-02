@@ -60,5 +60,33 @@ export const getDaysInMonth = (firstDay, numberOfDays, monthBefore) => {
   for (let i = 1; i <= numberOfDays; i++) {
     days.push({ number: i, currentMonth: true });
   }
+  for (let i = 1; i <= 42 - numberOfDays - firstDay + 1; i++) {
+    days.push({ number: i, currentMonth: false });
+  }
   return days;
+}
+// function to generate an array with the name of the days lowercased, 
+// starting with MON by default, or by the given day by parameter
+export const getDaysNames = (firstDay = 1) => {
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    days.push(new Date(0, 0, firstDay + i).toLocaleDateString("en-US", { weekday: "short" }).toUpperCase());
+  }
+  return days;
+}
+// function to get the month and year of the previous month
+// given the current month and year
+export const getPreviousDate = (year, month) => {
+  if (month === 0) {
+    return { year: year - 1, month: 11 };
+  }
+  return { year, month: month - 1 };
+}
+// function to get the month and year of the next month
+// given the current month and year
+export const getNextDate = (year, month) => {
+  if (month === 11) {
+    return { year: year + 1, month: 0 };
+  }
+  return { year, month: month + 1 };
 }

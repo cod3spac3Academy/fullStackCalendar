@@ -15,6 +15,10 @@
     padding: .15rem.25rem;
     min-height: 12.75vh;
 }
+.current-month {
+    color: #2d3748;
+    font-weight: bold;
+}
 .day-top {
     border-top: 1px solid #e2e8f0;
 }
@@ -29,4 +33,13 @@
 }
 .weekend {
     color: #e53e3e;
+}
+.event {
+    background-color: #4299e1;
+    border-radius: .25rem;
+    padding: .15rem;
+    margin: .15rem 0;
+    display: inline-block;
+    font-size: xx-small;
+    max-width: 90%;
 }
