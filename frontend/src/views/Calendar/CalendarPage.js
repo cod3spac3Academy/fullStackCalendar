@@ -6,13 +6,17 @@
 import classes from "./CalendarPage.module.css";
 import CalendarHeader from "./CalendarHeader";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 // import all the functions from the datesManager file
 import * as datesManager from "../../utils/datesManager";
 import CalendarGrid from "./CalendarGrid";
 import Fetch from "../../utils/Fetch";
 import { getEventsByMonth } from "../../utils/events.helper";
+import { LocalStorage } from "../../services/LocalStorage.service";
+import ErrorService from "../../services/Error.service";
 
 const CalendarPage = () => {
+  const navigate = useNavigate();
   const [firstLoad, setFirstLoad] = useState(true);
   const [events, setEvents] = useState([]);
   const [year, setYear] = useState(null);
@@ -26,37 +30,71 @@ const CalendarPage = () => {
       setMonth(month);
       setToday({ year, month, day });
       setFirstLoad(false);
-      // fetch all events
-      Fetch.get().then((data) => {
-        setEvents(getEventsByMonth(data.data));
-      });
+      if (LocalStorage.checkItem("token")) {
+        Fetch.get()
+          .then((data) => {
+            setEvents(getEventsByMonth(data.data));
+          })
+          .catch((error) => {
+            ErrorService.handle(
+              error,
+              Fetch,
+              setEvents,
+              getEventsByMonth,
+              navigate
+            );
+          });
+      } else {
+        // TODO: add some feedback to the user
+        navigate("/login");
+      }
     }
   });
 
   const handleNextMonth = (prev) => {
-    let result;
-    if (prev) {
-      result = datesManager.getPreviousDate(year, month);
+    console.log(prev);
+    if (prev === "today") {
+      setYear(today.year);
+      setMonth(today.month);
+      return;
     } else {
-      result = datesManager.getNextDate(year, month);
+      let result;
+      if (prev) {
+        result = datesManager.getPreviousDate(year, month);
+      } else {
+        result = datesManager.getNextDate(year, month);
+      }
+      setYear(result.year);
+      setMonth(result.month);
     }
-    setYear(result.year);
-    setMonth(result.month);
   };
 
   const firstDay = datesManager.getFirstDayOfMonth(year, month);
-  const numberOfDays = datesManager.getNumberOfDaysInMonth(year, month);
-  const monthBefore = datesManager.getNumberOfDaysInPreviousMonth(year, month);
+  const numDays = datesManager.getNumberOfDaysInMonth(year, month);
+  const monthBeforeNumDays = datesManager.getNumberOfDaysInPreviousMonth(
+    year,
+    month
+  );
   const currentDate = {
     month: datesManager.getMonthName(month),
     year,
   };
-  const daysToGrid = { today, firstDay, numberOfDays, monthBefore };
+  const daysToGrid = { firstDay, numDays, monthBeforeNumDays };
 
   return (
     <div className={classes.container}>
-      <CalendarHeader current={currentDate} onHandleMonth={handleNextMonth} />
-      <CalendarGrid current={daysToGrid} events={events?.[year]?.[month] || null} />
+      <CalendarHeader
+        current={currentDate}
+        onHandleMonth={handleNextMonth}
+        today={datesManager.isCurrentMonth(today, year, month)}
+      />
+      <CalendarGrid
+        current={daysToGrid}
+        events={events?.[year]?.[month] || null}
+        today={
+          datesManager.isCurrentMonth(today, year, month) ? today.day : null
+        }
+      />
     </div>
   );
 };

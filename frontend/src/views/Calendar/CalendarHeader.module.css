@@ -8,36 +8,62 @@
 
 .header-date {
   font-family: "Alegreya", serif;
+  font-size: 3.2rem;
+  max-width: 40%;
+  color: var(--calendar-red);
+}
+.header-date>strong {
   font-size: 2.2rem;
-  font-weight: 400;
+  color: var(--calendar-blue);
 }
 
-.header-nav{
-    padding-top: 2px;
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.5rem;
+.header-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 2px 0.25rem;
+  border: 1px solid var(--calendar-light-gray);
+  border-radius: 0.5rem;
 }
 .header-nav button {
-    min-width: 50px;
-    display: inline-block;
-    align-items: center;
-    padding: .25rem .75rem;
-    line-height: 1;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: .8rem;
-    color: #718096;
+  min-width: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  background: none;
+  cursor: pointer;
+  color: var(--calendar-blue);
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-out;
 }
 .header-nav button:hover {
-    background-color: #e2e8f0;
-    border-radius: 0.5rem;
+  background-color: var(--calendar-light-gray);
+  color: var(--calendar-light-blue);
+  transition: all 0.25s ease-out;
 }
 .header-nav .line-right {
-    display: inline-flex;
-    border-left: 1px solid #e2e8f0;
-    height: 2.4rem;
-    margin: 0 0.5rem;
+  display: inline-flex;
+  border-left: 1px solid var(--calendar-light-gray);
+  height: 2.4rem;
+  margin: 0 0.5rem;
+}
+.header-nav button.header-nav-today {
+  background-color: var(--calendar-light-gray);
+  color: var(--calendar-red);
+  cursor: pointer;
+  margin-right: 2px;
+}
+.header-nav button:not(button[disabled]).header-nav-today:hover {
+  background-color: var(--calendar-dark-gray);
+}
+.header-nav button.header-nav-today >*{
+  fill: var(--calendar-blue);
+}
+.header-nav button.header-nav-today:hover >*{
+  fill: var(--calendar-light-blue);
+}
+.header-nav button[disabled].header-nav-today,
+.header-nav button[disabled].header-nav-today>* {
+  cursor: not-allowed;
+  fill: var(--calendar-dark-gray);
 }

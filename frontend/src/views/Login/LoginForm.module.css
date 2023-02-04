@@ -74,6 +74,12 @@ form .form-button button {
     font-size: 1.1rem;
     margin-right: .8em;
     border-radius: .4rem;
+    transition: all 0.2s ease;
+}
+form .form-button button:hover {
+    background-color: #3c617e;
+    color: #fff;
+    box-shadow: 0 0 0 rgb(0 0 0 / 16%);
 }
 form .form-button a {
     color: #fff;

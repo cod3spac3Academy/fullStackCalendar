@@ -1,7 +1,13 @@
 .today {
-    background-color: #4299e1;
-    border-radius: 50%;
-    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    /* margin-top: -6px; */
+    color: white;
+    background-color: var(--calendar-light-blue);
+    border-radius: .25rem;
 }
 .day-box {
     display: flex;
@@ -14,6 +20,7 @@
     color: #718096;
     padding: .15rem.25rem;
     min-height: 12.75vh;
+    overflow-y: auto;
 }
 .current-month {
     color: #2d3748;
@@ -36,6 +43,7 @@
 }
 .event {
     background-color: #4299e1;
+    color: white;
     border-radius: .25rem;
     padding: .15rem;
     margin: .15rem 0;

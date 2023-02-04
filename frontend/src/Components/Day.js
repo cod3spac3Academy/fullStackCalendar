@@ -3,7 +3,7 @@ import { getAbbString } from "../utils/stringsManager";
 
 const Day = (props) => {
   // initial styles
-  props.events && console.log("events", props.events);
+  // props.events && console.log("events", props.events);
   let styles = {
     borderLeft: false,
     borderTop: false,
@@ -24,9 +24,9 @@ const Day = (props) => {
   ) {
     styles.weekend = true;
   }
-  // if (props.day.number === current.today) {
-  //   styles.today = true;
-  // }
+  if (props.today) {
+    styles.today = true;
+  }
   return (
     <div
       className={`${classes["day-box"]} 
@@ -35,12 +35,11 @@ const Day = (props) => {
         ${styles.borderTop && classes["day-top"]} 
         ${styles.borderLeft && classes["day-left"]}
        ${styles.weekend && classes["weekend"]}
-       ${styles.today && classes["today"]}     
        ${props.current && classes["current-month"]}     
        `}
     >
       {props.dayName && <span>{props.dayName}</span>}
-      <span>{props.day}</span>
+      <span className={`${styles.today && classes["today"]}`}>{props.day}</span>
       {props.events &&
         props.events.map((event, index) => {
           return (

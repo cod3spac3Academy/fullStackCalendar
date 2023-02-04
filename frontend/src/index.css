@@ -1,6 +1,15 @@
 :root {
   box-sizing: border-box;
   font-size: 0.785rem;
+  --calendar-blue: #428bca;
+  --calendar-light-blue: #5bc0de;
+  --calendar-green: #5cb85c;
+  --calendar-orange: #f0ad4e;
+  --calendar-red: #d9534f;
+  --calendar-pink: #c54165;
+  --calendar-purple: #886ec9;
+  --calendar-light-gray: #e2e8f0;
+  --calendar-dark-gray: #718096;
 }
 
 *,

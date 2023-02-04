@@ -2,11 +2,11 @@ import classes from "./CalendarGrid.module.css";
 import { getDaysInMonth, getDaysNames } from "../../utils/datesManager";
 import Day from "../../Components/Day";
 
-const CalendarGrid = ({ current, events }) => {
-  const { firstDay, numberOfDays, monthBefore } = current;
-  let days = getDaysInMonth(firstDay, numberOfDays, monthBefore);
+const CalendarGrid = ({ current, events, today }) => {
+  const { firstDay, numDays, monthBeforeNumDays } = current;
+  let days = getDaysInMonth(firstDay, numDays, monthBeforeNumDays);
   let daysNames = getDaysNames();
-  events && console.log("events", events);
+  // events && console.log("events", events);
 
   return (
     <div className={classes.grid}>
@@ -19,6 +19,7 @@ const CalendarGrid = ({ current, events }) => {
             current={day.currentMonth}
             dayName={(index < 7 && daysNames[index]) || null}
             events={events?.[day.number] || null}
+            today={today === day.number && day.currentMonth ? true : false}
           />
         );
       })}

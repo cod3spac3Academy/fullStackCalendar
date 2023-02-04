@@ -82,7 +82,8 @@ function LoginPage() {
             loginMessage,
           });
           setTimeout(() => {
-            navigate("/calendar");
+            setVisible(false);
+            navigate(goTo);
           }, 3000);
         } else {
           setLoginInfo({

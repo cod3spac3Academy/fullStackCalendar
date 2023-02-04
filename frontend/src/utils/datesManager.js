@@ -50,30 +50,35 @@ export const getMonthName = (month) => {
     new Date(0, month)
   );
 };
-// function that generates an array of objects with the days of the month, 
+// function that generates an array of objects with the days of the month,
 // including the days of the previous and next month
 export const getDaysInMonth = (firstDay, numberOfDays, monthBefore) => {
   const days = [];
-  for (let i = 0; i < firstDay -1; i++) {
+  let max = 42 - numberOfDays - (firstDay > 0 ? firstDay : 1) + 1;
+  for (let i = 0; i < firstDay - 1; i++) {
     days.unshift({ number: monthBefore - i, currentMonth: false });
   }
   for (let i = 1; i <= numberOfDays; i++) {
     days.push({ number: i, currentMonth: true });
   }
-  for (let i = 1; i <= 42 - numberOfDays - firstDay + 1; i++) {
+  for (let i = 1; i <= max; i++) {
     days.push({ number: i, currentMonth: false });
   }
   return days;
-}
-// function to generate an array with the name of the days lowercased, 
+};
+// function to generate an array with the name of the days lowercased,
 // starting with MON by default, or by the given day by parameter
 export const getDaysNames = (firstDay = 1) => {
   const days = [];
   for (let i = 0; i < 7; i++) {
-    days.push(new Date(0, 0, firstDay + i).toLocaleDateString("en-US", { weekday: "short" }).toUpperCase());
+    days.push(
+      new Date(0, 0, firstDay + i)
+        .toLocaleDateString("en-US", { weekday: "short" })
+        .toUpperCase()
+    );
   }
   return days;
-}
+};
 // function to get the month and year of the previous month
 // given the current month and year
 export const getPreviousDate = (year, month) => {
@@ -81,7 +86,7 @@ export const getPreviousDate = (year, month) => {
     return { year: year - 1, month: 11 };
   }
   return { year, month: month - 1 };
-}
+};
 // function to get the month and year of the next month
 // given the current month and year
 export const getNextDate = (year, month) => {
@@ -89,4 +94,8 @@ export const getNextDate = (year, month) => {
     return { year: year + 1, month: 0 };
   }
   return { year, month: month + 1 };
+};
+// function to verify if the current year and month are the same as the given year and month
+export const isCurrentMonth = (today, year, month) => {
+  return today.year === year && today.month === month;
 }

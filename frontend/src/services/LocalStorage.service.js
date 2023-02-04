@@ -15,6 +15,9 @@ export const LocalStorage = {
       return localStorage.getItem(key);
     }
   },
+  checkItem: (key) => {
+    return localStorage.getItem(key) ? true : false;
+  },
   removeItem: (key) => {
     localStorage.removeItem(key);
   },
